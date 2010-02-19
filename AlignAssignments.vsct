@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Extern href="msobtnid.h"/>
+
+  <Commands package="guidAlignAssignmentsPkg">
+    <Groups>
+      <Group guid="guidAlignAssignmentsCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT"/>
+      </Group>
+    </Groups>
+    <Buttons>
+      <Button guid="guidAlignAssignmentsCmdSet" id="cmdidAlignAssignments" priority="0x0100" type="Button">
+        <Parent guid="guidAlignAssignmentsCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DontCache</CommandFlag>
+        <Strings>
+          <CommandName>cmdidAlignAssignments</CommandName>
+          <ButtonText>Align Assignments</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+    <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\Images_32bit.bmp" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>
+    </Bitmaps>
+  </Commands>
+  <KeyBindings>
+    <KeyBinding guid="guidAlignAssignmentsCmdSet" id="cmdidAlignAssignments" key1="VK_OEM_6" mod1="Control Alt" editor="guidVSStd97" />
+  </KeyBindings>
+  <Symbols>
+    <GuidSymbol name="guidAlignAssignmentsPkg" value="{1f50f37e-21c8-41c1-8f19-02e7973e764b}" />
+    <GuidSymbol name="guidAlignAssignmentsCmdSet" value="{ba0f8e5d-6d3a-46d9-b8cf-cd585018a493}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="cmdidAlignAssignments" value="0x0100" />
+    </GuidSymbol>
+    <GuidSymbol name="guidImages" value="{63df12b7-6bf0-4b19-843d-3ec69e08439d}" >
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+    </GuidSymbol>
+  </Symbols>
+
+</CommandTable>
