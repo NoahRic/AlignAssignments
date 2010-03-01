@@ -177,6 +177,16 @@ namespace NoahRichards.AlignAssignments
                     column += tabSize - (column % tabSize);
                 else
                     column++;
+
+                // Also, check to see if this is a surrogate pair.  If so, skip the next character by incrementing
+                // the loop counter and increment the nonWhiteSpaceCount without incrementing the column
+                // count.
+                if (char.IsHighSurrogate(ch) &&
+                    i < line.End.Position - 1 && char.IsLowSurrogate(snapshot[i + 1]))
+                {
+                    nonWhiteSpaceCount++;
+                    i++;
+                }
             }
 
             return new ColumnAndOffset() { Column = -1, Offset = -1 };
