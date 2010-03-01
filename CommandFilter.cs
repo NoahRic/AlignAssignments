@@ -99,9 +99,22 @@ namespace NoahRichards.AlignAssignments
             lineNumberToEqualsColumn[currentLineNumber] = columnAndOffset;
 
             int lineNumber = currentLineNumber;
+            int minLineNumber = 0;
+            int maxLineNumber = snapshot.LineCount - 1;
+
+            // If the selection spans multiple lines, only attempt to fix the lines in the selection
+            if (!_view.Selection.IsEmpty)
+            {
+                var selectionStartLine = _view.Selection.Start.Position.GetContainingLine();
+                if (_view.Selection.End.Position > selectionStartLine.End)
+                {
+                    minLineNumber = selectionStartLine.LineNumber;
+                    maxLineNumber = snapshot.GetLineNumberFromPosition(_view.Selection.End.Position);
+                }
+            }
 
             // Moving backwards
-            for (lineNumber = currentLineNumber - 1; lineNumber >= 0; lineNumber--)
+            for (lineNumber = currentLineNumber - 1; lineNumber >= minLineNumber; lineNumber--)
             {
                 columnAndOffset = GetColumnNumberOfFirstEquals(snapshot.GetLineFromLineNumber(lineNumber));
                 if (columnAndOffset.Column == -1)
@@ -111,7 +124,7 @@ namespace NoahRichards.AlignAssignments
             }
 
             // Moving forwards
-            for (lineNumber = currentLineNumber + 1; lineNumber < snapshot.LineCount; lineNumber++)
+            for (lineNumber = currentLineNumber + 1; lineNumber <= maxLineNumber; lineNumber++)
             {
                 columnAndOffset = GetColumnNumberOfFirstEquals(snapshot.GetLineFromLineNumber(lineNumber));
                 if (columnAndOffset.Column == -1)
@@ -147,11 +160,18 @@ namespace NoahRichards.AlignAssignments
             int tabSize = _view.Options.GetOptionValue(DefaultOptions.TabSizeOptionId);
 
             int column = 0;
+            int nonWhiteSpaceCount = 0;
             for (int i = line.Start.Position; i < line.End.Position; i++)
             {
                 char ch = snapshot[i];
                 if (ch == '=')
-                    return new ColumnAndOffset() { Column = column, Offset = i - line.Start.Position };
+                    return new ColumnAndOffset() { Column = column, 
+                                                   Offset = (i - line.Start.Position) - nonWhiteSpaceCount };
+
+                if (ch == '\t' || ch == ' ')
+                    nonWhiteSpaceCount = 0;
+                else
+                    nonWhiteSpaceCount++;
 
                 if (ch == '\t')
                     column += tabSize - (column % tabSize);
@@ -168,7 +188,7 @@ namespace NoahRichards.AlignAssignments
             public int Offset;
         }
 
-        private bool AssignmentsToAlign 
+        private bool AssignmentsToAlign
         {
             get
             {
