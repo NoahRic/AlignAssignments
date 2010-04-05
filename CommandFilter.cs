@@ -17,7 +17,7 @@ namespace NoahRichards.AlignAssignments
 {
     [Export(typeof(IVsTextViewCreationListener))]
     [ContentType("code")]
-    [TextViewRole(PredefinedTextViewRoles.Interactive)]
+    [TextViewRole(PredefinedTextViewRoles.Editable)]
     class VsTextViewCreationListener : IVsTextViewCreationListener
     {
         [Import]
@@ -167,8 +167,9 @@ namespace NoahRichards.AlignAssignments
                 if (ch == '=')
                     return new ColumnAndOffset() { Column = column, 
                                                    Offset = (i - line.Start.Position) - nonWhiteSpaceCount };
-
-                if (ch == '\t' || ch == ' ')
+ 
+                // For the sake of associating characters with the '=', include only 
+                if (!CharAssociatesWithEquals(ch))
                     nonWhiteSpaceCount = 0;
                 else
                     nonWhiteSpaceCount++;
@@ -196,6 +197,13 @@ namespace NoahRichards.AlignAssignments
         {
             public int Column;
             public int Offset;
+        }
+
+        static HashSet<char> charsThatAssociateWithEquals = new HashSet<char>() 
+            { '+', '-', '.', '<', '>', '/', ':', '\\', '*', '&', '^', '%', '$', '#', '@', '!', '~' };
+        private bool CharAssociatesWithEquals(char ch)
+        {
+            return charsThatAssociateWithEquals.Contains(ch);
         }
 
         private bool AssignmentsToAlign

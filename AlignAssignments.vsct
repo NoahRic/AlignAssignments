@@ -17,6 +17,8 @@
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DontCache</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>cmdidAlignAssignments</CommandName>
           <ButtonText>Align Assignments</ButtonText>
