@@ -6,8 +6,6 @@ namespace NoahRichards.AlignAssignments
 {
     static class PkgCmdIDList
     {
-        public const uint cmdidAlignAssignments =        0x100;
-
-
+        public const uint cmdidAlignAssignments = 0x100;
     };
 }
